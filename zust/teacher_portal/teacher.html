@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SUST Faculty Directory</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --color-bg: #ffffff;
+      --color-text-primary: #111827;
+      --color-text-secondary: #6b7280;
+      --color-card-bg: #f9fafb;
+      --color-card-shadow: rgba(0, 0, 0, 0.05);
+      --border-radius: 0.75rem;
+      --transition-speed: 0.3s;
+      --max-container-width: 1200px;
+      --input-border: #d1d5db;
+      --input-focus-border: #111827;
+      --accent-color: #111827;
+      --error-color: #dc2626;
+    }
+
+    /* Reset and base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      background: var(--color-bg);
+      font-family: 'Poppins', sans-serif;
+      color: var(--color-text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      font-size: 16px;
+    }
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+    img {
+      max-width: 100%;
+      display: block;
+      border-radius: var(--border-radius);
+    }
+
+    /* Container */
+    .container {
+      width: 90%;
+      max-width: var(--max-container-width);
+      margin-left: auto;
+      margin-right: auto;
+      padding-top: 4rem;
+      padding-bottom: 4rem;
+      flex-grow: 1;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      background: var(--color-bg);
+      border-bottom: 1px solid #e5e7eb;
+      box-shadow: 0 1px 4px var(--color-card-shadow);
+      z-index: 100;
+    }
+    .nav-container {
+      max-width: var(--max-container-width);
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--color-text-primary);
+      letter-spacing: 0.05em;
+      user-select: none;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+    }
+    nav li {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--color-text-secondary);
+      cursor: pointer;
+      transition: color var(--transition-speed);
+      user-select: none;
+    }
+    nav li:hover,
+    nav li:focus {
+      color: var(--color-text-primary);
+      outline: none;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding-top: 6rem;
+      padding-bottom: 6rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .hero h1 {
+      font-size: 3.8rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--color-text-primary);
+      line-height: 1.1;
+    }
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--color-text-secondary);
+      margin: 0;
+    }
+    .hero .btn-primary {
+      margin-top: 2.5rem;
+      background: var(--accent-color);
+      color: white;
+      padding: 1.15rem 3rem;
+      border: none;
+      border-radius: var(--border-radius);
+      font-weight: 700;
+      font-size: 1.125rem;
+      cursor: pointer;
+      transition: background-color var(--transition-speed), transform var(--transition-speed);
+      user-select: none;
+    }
+    .hero .btn-primary:hover,
+    .hero .btn-primary:focus {
+      background: #333333;
+      outline: none;
+      transform: scale(1.05);
+    }
+
+    /* Faculty Grid */
+    .faculty-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2.5rem;
+      padding-bottom: 3rem;
+    }
+
+    /* Faculty card */
+    .faculty-card {
+      background: var(--color-card-bg);
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 12px var(--color-card-shadow);
+      padding: 1.5rem 2rem 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: box-shadow var(--transition-speed), transform var(--transition-speed);
+      cursor: default;
+    }
+    .faculty-card:hover,
+    .faculty-card:focus-within {
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+      transform: translateY(-5px);
+      outline: none;
+    }
+    .faculty-image {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .faculty-name {
+      font-weight: 700;
+      font-size: 1.3rem;
+      margin: 0.25rem 0 0.5rem 0;
+      color: var(--color-text-primary);
+    }
+    .faculty-title {
+      font-weight: 600;
+      font-size: 1rem;
+      color: #4b5563;
+      margin-bottom: 0.4rem;
+    }
+    .faculty-department {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #9ca3af;
+      margin-bottom: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .faculty-bio {
+      font-size: 0.95rem;
+      color: var(--color-text-secondary);
+      line-height: 1.4;
+      margin-top: auto;
+    }
+
+    /* Add Faculty form section */
+    .form-section {
+      max-width: 700px;
+      margin: 3rem auto 5rem auto;
+      background: var(--color-card-bg);
+      padding: 2rem 2.5rem;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 12px var(--color-card-shadow);
+    }
+    .form-section h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    label {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--color-text-primary);
+      margin-bottom: 0.4rem;
+      display: block;
+    }
+    input[type="text"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 1.5px solid var(--input-border, #d1d5db);
+      border-radius: var(--border-radius);
+      font-size: 1rem;
+      color: var(--color-text-primary);
+      font-family: inherit;
+      transition: border-color var(--transition-speed);
+      resize: vertical;
+    }
+    input[type="text"]:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--input-focus-border);
+      box-shadow: 0 0 3px rgba(17, 24, 39, 0.35);
+    }
+    textarea {
+      min-height: 80px;
+    }
+    .submit-btn {
+      padding: 1rem 2rem;
+      font-weight: 700;
+      font-size: 1.125rem;
+      background: var(--accent-color);
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: background-color var(--transition-speed), transform var(--transition-speed);
+      align-self: flex-start;
+      user-select: none;
+    }
+    .submit-btn:hover,
+    .submit-btn:focus {
+      background: #333333;
+      outline: none;
+      transform: scale(1.05);
+    }
+    .error-message {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--error-color);
+      margin-top: 0.25rem;
+    }
+    .success-message {
+      margin-top: 1rem;
+      color: #065f46;
+      font-weight: 600;
+      background: #d1fae5;
+      padding: 1rem;
+      border-radius: var(--border-radius);
+      text-align: center;
+      user-select: none;
+    }
+
+    /* Responsive tweaks */
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 2.6rem;
+      }
+      .faculty-image {
+        width: 100px;
+        height: 100px;
+      }
+      .form-section {
+        margin: 2rem 1rem 3rem 1rem;
+        padding: 1.5rem 1.5rem;
+      }
+      .submit-btn {
+        width: 100%;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header role="banner">
+    <div class="nav-container" role="navigation" aria-label="Primary Navigation">
+      <div class="logo" tabindex="0">SUST Faculty</div>
+      <nav>
+        <ul>
+          <li tabindex="0">Home</li>
+          <li tabindex="0">Departments</li>
+          <li tabindex="0">Research</li>
+          <li tabindex="0">Contact</li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" role="main" tabindex="-1">
+    <section class="hero" aria-label="Page introduction">
+      <h1>Meet the Faculty of SUST</h1>
+      <p>Explore our dedicated faculty members leading cutting-edge research and education at SUST.</p>
+      <button class="btn-primary" id="scrollToForm" aria-label="Add new faculty member">Add Faculty Member</button>
+    </section>
+
+    <section aria-label="Faculty members list" class="faculty-grid" id="facultyList">
+      <!-- Faculty profiles inserted here dynamically -->
+    </section>
+
+    <section class="form-section" aria-label="Add new faculty member form" id="formSection" hidden>
+      <h2>Add New Faculty Member</h2>
+      <form id="facultyForm" novalidate>
+        <div>
+          <label for="facultyName">Full Name <sup aria-hidden="true" style="color: var(--error-color);">*</sup></label>
+          <input type="text" id="facultyName" name="facultyName" placeholder="Full name" required aria-required="true" />
+          <div class="error-message" id="error-facultyName" aria-live="polite"></div>
+        </div>
+
+        <div>
+          <label for="facultyTitle">Title <sup aria-hidden="true" style="color: var(--error-color);">*</sup></label>
+          <input type="text" id="facultyTitle" name="facultyTitle" placeholder="e.g. Professor, Associate Professor" required aria-required="true" />
+          <div class="error-message" id="error-facultyTitle" aria-live="polite"></div>
+        </div>
+
+        <div>
+          <label for="facultyDepartment">Department <sup aria-hidden="true" style="color: var(--error-color);">*</sup></label>
+          <select id="facultyDepartment" name="facultyDepartment" required aria-required="true">
+            <option value="" disabled selected>Select department</option>
+            <option>Computer Science & Engineering</option>
+            <option>Physics</option>
+            <option>Mathematics</option>
+            <option>Chemical Engineering</option>
+            <option>Biotechnology</option>
+            <option>Electrical & Electronic Engineering</option>
+            <option>Environmental Science</option>
+            <option>Economics</option>
+            <option>Business Administration</option>
+          </select>
+          <div class="error-message" id="error-facultyDepartment" aria-live="polite"></div>
+        </div>
+
+        <div>
+          <label for="facultyBio">Short Bio <sup aria-hidden="true" style="color: var(--error-color);">*</sup></label>
+          <textarea id="facultyBio" name="facultyBio" placeholder="Brief description or research interests" rows="4" required aria-required="true"></textarea>
+          <div class="error-message" id="error-facultyBio" aria-live="polite"></div>
+        </div>
+
+        <div>
+          <label for="facultyPhoto">Photo URL <sup aria-hidden="true" style="color: var(--error-color);">*</sup></label>
+          <input type="text" id="facultyPhoto" name="facultyPhoto" placeholder="https://example.com/photo.jpg" required aria-required="true" />
+          <div class="error-message" id="error-facultyPhoto" aria-live="polite"></div>
+        </div>
+<form action="add_faculty.php" method="POST">
+
+        <button type="submit" class="submit-btn" aria-label="Submit new faculty member">Add Faculty</button>
+      </form>
+      <div id="formSuccessMessage" class="success-message" role="alert" aria-live="assertive" hidden>
+        Faculty member added successfully!
+      </div>
+    </section>
+  </main>
+
+  <footer style="text-align:center; color: var(--color-text-secondary); font-size:0.875rem; padding:1rem 0; user-select:none;">
+    &copy; 2024 Shahjalal University of Science and Technology (SUST)
+  </footer>
+
+  <script>
+    (function(){
+      'use strict';
+
+      const facultyListEl = document.getElementById('facultyList');
+      const formSection = document.getElementById('formSection');
+      const facultyForm = document.getElementById('facultyForm');
+      const formSuccess = document.getElementById('formSuccessMessage');
+      const scrollToFormBtn = document.getElementById('scrollToForm');
+
+      const ERROR_MSGS = {
+        facultyName: "Full name is required.",
+        facultyTitle: "Title is required.",
+        facultyDepartment: "Please select a department.",
+        facultyBio: "Bio is required.",
+        facultyPhoto: "Photo URL is required and must be a valid URL."
+      };
+
+      function showError(inputId, msg) {
+        const errorEl = document.getElementById('error-' + inputId);
+        if (errorEl) errorEl.textContent = msg;
+      }
+      function clearErrors() {
+        ['facultyName','facultyTitle','facultyDepartment','facultyBio','facultyPhoto'].forEach(id => showError(id, ''));
+      }
+      function isValidURL(str) {
+        try {
+          new URL(str);
+          return true;
+        } catch {
+          return false;
+        }
+      }
+
+      // Validate form
+      function validateForm(data){
+        clearErrors();
+        let valid = true;
+
+        if(!data.facultyName.trim()) {
+          showError('facultyName', ERROR_MSGS.facultyName);
+          valid = false;
+        }
+        if(!data.facultyTitle.trim()) {
+          showError('facultyTitle', ERROR_MSGS.facultyTitle);
+          valid = false;
+        }
+        if(!data.facultyDepartment.trim()) {
+          showError('facultyDepartment', ERROR_MSGS.facultyDepartment);
+          valid = false;
+        }
+        if(!data.facultyBio.trim()) {
+          showError('facultyBio', ERROR_MSGS.facultyBio);
+          valid = false;
+        }
+        if(!data.facultyPhoto.trim() || !isValidURL(data.facultyPhoto.trim())) {
+          showError('facultyPhoto', ERROR_MSGS.facultyPhoto);
+          valid = false;
+        }
+        return valid;
+      }
+
+      // Load faculty data from localStorage, or default initial data
+      function loadFacultyData(){
+        const stored = localStorage.getItem('sustFacultyData');
+        if(!stored) {
+          // Initial sample faculty data
+          return [
+            {
+              id: '1',
+              name: 'Dr. Amina Rahman',
+              title: 'Professor',
+              department: 'Computer Science & Engineering',
+              bio: 'Specializes in artificial intelligence and machine learning with over 20 years of teaching experience.',
+              photo: 'https://randomuser.me/api/portraits/women/65.jpg'
+            },
+            {
+              id: '2',
+              name: 'Dr. Kamal Hossain',
+              title: 'Associate Professor',
+              department: 'Physics',
+              bio: 'Research interests include quantum mechanics and condensed matter physics.',
+              photo: 'https://randomuser.me/api/portraits/men/43.jpg'
+            },
+            {
+              id: '3',
+              name: 'Dr. Farida Yasmin',
+              title: 'Assistant Professor',
+              department: 'Mathematics',
+              bio: 'Focuses on algebraic topology and its applications in data science.',
+              photo: 'https://randomuser.me/api/portraits/women/44.jpg'
+            }
+          ];
+        } else {
+          try {
+            return JSON.parse(stored);
+          } catch {
+            return [];
+          }
+        }
+      }
+      let facultyData = loadFacultyData();
+
+      // Save data to localStorage
+      function saveFacultyData(){
+        localStorage.setItem('sustFacultyData', JSON.stringify(facultyData));
+      }
+
+      // Create faculty card element
+      function createFacultyCard(faculty){
+        const card = document.createElement('article');
+        card.className = 'faculty-card';
+        card.tabIndex = 0;
+
+        const img = document.createElement('img');
+        img.className = 'faculty-image';
+        img.src = faculty.photo;
+        img.alt = 'Photo of ' + faculty.name;
+        img.loading = 'lazy';
+
+        const name = document.createElement('h3');
+        name.className = 'faculty-name';
+        name.textContent = faculty.name;
+
+        const title = document.createElement('p');
+        title.className = 'faculty-title';
+        title.textContent = faculty.title;
+
+        const dept = document.createElement('p');
+        dept.className = 'faculty-department';
+        dept.textContent = faculty.department;
+
+        const bio = document.createElement('p');
+        bio.className = 'faculty-bio';
+        bio.textContent = faculty.bio;
+
+        card.appendChild(img);
+        card.appendChild(name);
+        card.appendChild(title);
+        card.appendChild(dept);
+        card.appendChild(bio);
+
+        return card;
+      }
+
+      // Render faculty grid
+      function renderFaculty(){
+        facultyListEl.innerHTML = '';
+        if(facultyData.length === 0){
+          facultyListEl.textContent = 'No faculty members found.';
+          return;
+        }
+        facultyData.forEach(f => {
+          facultyListEl.appendChild(createFacultyCard(f));
+        });
+      }
+
+      // Add faculty member
+      function addFacultyMember(data){
+        // Assign unique id using timestamp
+        data.id = Date.now().toString();
+        facultyData.push(data);
+        saveFacultyData();
+        renderFaculty();
+      }
+
+      // Reset form and messages
+      function resetForm(){
+        facultyForm.reset();
+        clearErrors();
+        formSuccess.hidden = true;
+      }
+
+      // Scroll form into view
+      scrollToFormBtn.addEventListener('click', () => {
+        formSection.hidden = false;
+        formSection.scrollIntoView({behavior: 'smooth'});
+        facultyForm.facultyName.focus();
+      });
+
+      // Form submission handler
+      facultyForm.addEventListener('submit', e => {
+        e.preventDefault();
+
+        const newFaculty = {
+          name: facultyForm.facultyName.value.trim(),
+          title: facultyForm.facultyTitle.value.trim(),
+          department: facultyForm.facultyDepartment.value.trim(),
+          bio: facultyForm.facultyBio.value.trim(),
+          photo: facultyForm.facultyPhoto.value.trim()
+        };
+        if(validateForm(newFaculty)){
+          addFacultyMember(newFaculty);
+          formSuccess.hidden = false;
+          facultyForm.reset();
+          facultyForm.facultyName.focus();
+          // Hide success after 4 seconds
+          setTimeout(() => formSuccess.hidden = true, 4000);
+        }
+      });
+
+      // Initial render
+      renderFaculty();
+    })();
+  </script>
+</body>
+</html>
+
